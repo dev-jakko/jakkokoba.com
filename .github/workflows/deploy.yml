@@ -24,7 +24,7 @@ jobs:
         run: |
           lftp -d -e "
           set ftp:passive-mode on
-          open -u \$FTP_USERNAME,\$FTP_PASSWORD \$FTP_HOST
+          open -u \$FTP_USERNAME,$FTP_PASSWORD $FTP_HOST
           mirror -R --ignore-time ./ /htdocs
           quit
           " || exit 1
