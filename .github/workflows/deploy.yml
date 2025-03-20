@@ -3,7 +3,7 @@ name: Deploy to InfinityFree
 on:
   push:
     branches:
-      - main  # or your default branch, e.g., 'master'
+      - main
 
 jobs:
   deploy:
@@ -22,8 +22,9 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          lftp -e "
+          lftp -d -e "
+          set ftp:passive-mode on
           open -u \$FTP_USERNAME,\$FTP_PASSWORD \$FTP_HOST
-          mirror -R ./ /htdocs
+          mirror -R --ignore-time ./ /htdocs
           quit
-          "
+          " || exit 1
